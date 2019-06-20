@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour {
 
 	public float movementSpeed;
 
 	private void Start() {
-		byte[] png = File.ReadAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Test.png");
+		byte[] png = File.ReadAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Trimmed" + Path.DirectorySeparatorChar + "Test.png");
 		Texture2D newSprite = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 		newSprite.LoadImage(png);
 		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -28,6 +29,9 @@ public class Controller : MonoBehaviour {
 		}
 		if (Input.GetKey(KeyCode.W)) {
 			movement.y += 1;
+		}
+		if (Input.GetKey(KeyCode.B)) {
+			SceneManager.LoadScene("DrawingScene");
 		}
 		transform.position += movement.normalized * movementSpeed;
 	}
