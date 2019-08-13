@@ -3513,6 +3513,7 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 1}
   precision: 0.03
   debugText: {fileID: 1101882186}
+  path: {fileID: 11400000, guid: ce029f74ead9f714e8c3a9f8322531bc, type: 2}
   colorButtons:
   - {fileID: 2131283424}
   - {fileID: 1256165016}

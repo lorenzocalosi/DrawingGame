@@ -1,20 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour {
 
 	public float movementSpeed;
-
-	private void Start() {
-		byte[] png = File.ReadAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Trimmed" + Path.DirectorySeparatorChar + "Test.png");
-		Texture2D newSprite = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-		newSprite.LoadImage(png);
-		SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-		spriteRenderer.sprite = Sprite.Create(newSprite, new Rect(0,0,newSprite.width, newSprite.height), Vector2.one/2);
-	}
 
 	private void Update() {
 		Vector3 movement = Vector3.zero;

@@ -19,6 +19,7 @@ public class TextureEditor : MonoBehaviour {
 	public Color color;
 	public float precision;
 	public Text debugText;
+	public ScriptableObjectString path;
 
 	//Button References
 	[Header("Buttons")]
@@ -43,6 +44,11 @@ public class TextureEditor : MonoBehaviour {
 	private Texture2D editedTexture;
 	private Vector2 lastPosition;
 
+	//Paths
+	string topFolderPath;
+	string roughFolderPath;
+	string trimmedFolderPath;
+
 	//Debug
 	private string mode;
 	private string currentColor;
@@ -54,6 +60,9 @@ public class TextureEditor : MonoBehaviour {
 	#region Unity Callbacks
 
 	private void Start() {
+		topFolderPath = string.Concat(Application.dataPath , Path.DirectorySeparatorChar , "GeneratedSprites");
+		roughFolderPath = string.Concat(topFolderPath , Path.DirectorySeparatorChar, "Rough");
+		trimmedFolderPath = string.Concat(topFolderPath , Path.DirectorySeparatorChar, "Trimmed");
 		lastPosition = new Vector2(-1, -1);
 		// Create a new 2x2 texture ARGB32 (32 bit with alpha) and no mipmaps
 		editedTexture = new Texture2D(Mathf.FloorToInt((image.rectTransform.anchorMax.x - image.rectTransform.anchorMin.x) * Screen.width), 
@@ -155,17 +164,17 @@ public class TextureEditor : MonoBehaviour {
 	#region Texture Saving/Loading
 
 	public bool SaveSprite(string name) {
-		if (!Directory.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites")) {
-			Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites");
+		if (!Directory.Exists(topFolderPath)) {
+			Directory.CreateDirectory(topFolderPath);
 		}
-		if (!Directory.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough")) {
-			Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough");
+		if (!Directory.Exists(roughFolderPath)) {
+			Directory.CreateDirectory(roughFolderPath);
 		}
-		if (!Directory.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Trimmed")) {
-			Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Trimmed");
+		if (!Directory.Exists(trimmedFolderPath)) {
+			Directory.CreateDirectory(trimmedFolderPath);
 		}
-		File.WriteAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png", editedTexture.EncodeToPNG());
-		File.WriteAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Trimmed" + Path.DirectorySeparatorChar + name + ".png", Trim(editedTexture).EncodeToPNG());
+		File.WriteAllBytes(string.Concat(roughFolderPath, Path.DirectorySeparatorChar, path.s, ".png"), editedTexture.EncodeToPNG());
+		File.WriteAllBytes(string.Concat(trimmedFolderPath, Path.DirectorySeparatorChar, path.s, ".png"), Trim(editedTexture).EncodeToPNG());
 		return true;
 	}
 
@@ -185,7 +194,7 @@ public class TextureEditor : MonoBehaviour {
 
 	private void CheckHotkeys() {
 		if (Input.GetKeyDown(saveShortcut)) {
-			SaveSprite("Test");
+			SaveSprite(path.s);
 		}
 		if (Input.GetKeyDown(testShortcut)) {
 			SceneManager.LoadScene("PlayingScene");
@@ -194,7 +203,7 @@ public class TextureEditor : MonoBehaviour {
 			ClearTexture();
 		}
 		if (Input.GetKeyDown(loadShortcut)) {
-			LoadSprite("Test");
+			LoadSprite(path.s);
 		}
 	}
 
