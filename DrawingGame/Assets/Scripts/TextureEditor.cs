@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class TextureEditor : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class TextureEditor : MonoBehaviour {
 		Circle
 	}
 
+	public BookPro book;
 	public Image image;
 	public Camera mainCamera;
 	public int radius;
@@ -19,6 +21,7 @@ public class TextureEditor : MonoBehaviour {
 	public Color color;
 	public float precision;
 	public Text debugText;
+	public int pagePaperIndex;
 	public ScriptableObjectString path;
 
 	//Button References
@@ -40,6 +43,9 @@ public class TextureEditor : MonoBehaviour {
 	public KeyCode clearShortcut;
 	public KeyCode testShortcut;
 
+	private Vector3[] imageCorners;
+	private Rect imageRect;
+	private bool drawingEnabled = true;
 	private Color lastColor;
 	private Texture2D editedTexture;
 	private Vector2 lastPosition;
@@ -64,21 +70,25 @@ public class TextureEditor : MonoBehaviour {
 		roughFolderPath = string.Concat(topFolderPath , Path.DirectorySeparatorChar, "Rough");
 		trimmedFolderPath = string.Concat(topFolderPath , Path.DirectorySeparatorChar, "Trimmed");
 		lastPosition = new Vector2(-1, -1);
+		imageCorners = new Vector3[4];
+		image.rectTransform.GetWorldCorners(imageCorners);
+		imageRect = new Rect(imageCorners[0], imageCorners[2] - imageCorners[0]);
 		// Create a new 2x2 texture ARGB32 (32 bit with alpha) and no mipmaps
-		editedTexture = new Texture2D(Mathf.FloorToInt((image.rectTransform.anchorMax.x - image.rectTransform.anchorMin.x) * Screen.width), 
-									  Mathf.FloorToInt((image.rectTransform.anchorMax.y - image.rectTransform.anchorMin.y) * Screen.height),
+		editedTexture = new Texture2D((int)imageRect.width, 
+									  (int)imageRect.height,
 									  TextureFormat.RGBA32, false);
 		ClearTexture();
 		image.sprite = Sprite.Create(editedTexture, new Rect(0, 0, editedTexture.width, editedTexture.height), new Vector2(0.5f, 0.5f));
 		SetButtons();
+		FlipCheck();
+		book?.OnFlip.AddListener(new UnityEngine.Events.UnityAction(FlipCheck));
+		book?.OnFlipStart.AddListener(new UnityEngine.Events.UnityAction(DisableDrawing));
 	}
 
 	private void Update() {
-		Vector3 viewPortMousePosition = mainCamera.ScreenToViewportPoint(Input.mousePosition);
-		if (viewPortMousePosition.x > image.rectTransform.anchorMin.x && viewPortMousePosition.x < image.rectTransform.anchorMax.x &&
-			viewPortMousePosition.y > image.rectTransform.anchorMin.y && viewPortMousePosition.y < image.rectTransform.anchorMax.y) {
-			int x = Mathf.FloorToInt(((viewPortMousePosition.x - image.rectTransform.anchorMin.x) / (image.rectTransform.anchorMax.x - image.rectTransform.anchorMin.x)) * editedTexture.width);
-			int y = Mathf.FloorToInt(((viewPortMousePosition.y - image.rectTransform.anchorMin.y) / (image.rectTransform.anchorMax.y - image.rectTransform.anchorMin.y)) * editedTexture.height);
+		if (imageRect.Contains(Input.mousePosition) && drawingEnabled) {
+			int x = (int)Mathf.Abs(Input.mousePosition.x-imageRect.x);
+			int y = (int)Mathf.Abs(Input.mousePosition.y-imageRect.y);
 			Vector2 drawPosition = new Vector2(x, y);
 			xPosition = x.ToString();
 			yPosition = y.ToString();
@@ -104,7 +114,7 @@ public class TextureEditor : MonoBehaviour {
 			lastPosition = new Vector2Int(-1, -1);
 		}
 		CheckHotkeys();
-		debugText.text = string.Format("Tool: {0}\nShape: {1}\nColor: #{2}\nX: {3}\nY: {4}", color == Color.clear ? "Erase" : "Draw", shape.ToString(), ColorUtility.ToHtmlStringRGB(color), xPosition, yPosition);
+		//debugText.text = string.Format("Tool: {0}\nShape: {1}\nColor: #{2}\nX: {3}\nY: {4}", color == Color.clear ? "Erase" : "Draw", shape.ToString(), ColorUtility.ToHtmlStringRGB(color), xPosition, yPosition);
 	}
 
 	#endregion
@@ -209,17 +219,17 @@ public class TextureEditor : MonoBehaviour {
 
 	private void SetButtons() {
 		foreach (Button button in colorButtons) {
-			button.onClick.AddListener(() => { SetPencilColor(button.transform.GetChild(0).GetComponent<Image>().color); });
+			button?.onClick.AddListener(() => { SetPencilColor(button.transform.GetChild(0).GetComponent<Image>().color); });
 		}
-		drawButton.onClick.AddListener(() => { SetPencilColor(lastColor); });
-		eraseButton.onClick.AddListener(() => { SetPencilColor(Color.clear); });
-		clearButton.onClick.AddListener(() => { ClearTexture(); });
-		squareButton.onClick.AddListener(() => { SetPencilShape(PencilShape.Square); });
-		circleButton.onClick.AddListener(() => { SetPencilShape(PencilShape.Circle); });
-		saveButton.onClick.AddListener(() => { SaveSprite("Test"); });
-		loadButton.onClick.AddListener(() => { LoadSprite("Test"); });
-		clearButton.onClick.AddListener(() => { ClearTexture(); });
-		testButton.onClick.AddListener(() => { SceneManager.LoadScene("PlayingScene"); });
+		drawButton?.onClick.AddListener(() => { SetPencilColor(lastColor); });
+		eraseButton?.onClick.AddListener(() => { SetPencilColor(Color.clear); });
+		clearButton?.onClick.AddListener(() => { ClearTexture(); });
+		squareButton?.onClick.AddListener(() => { SetPencilShape(PencilShape.Square); });
+		circleButton?.onClick.AddListener(() => { SetPencilShape(PencilShape.Circle); });
+		saveButton?.onClick.AddListener(() => { SaveSprite("Test"); });
+		loadButton?.onClick.AddListener(() => { LoadSprite("Test"); });
+		clearButton?.onClick.AddListener(() => { ClearTexture(); });
+		testButton?.onClick.AddListener(() => { SceneManager.LoadScene("PlayingScene"); });
 	}
 
 	public void SetPencilSize(float pencilSize) {
@@ -233,6 +243,19 @@ public class TextureEditor : MonoBehaviour {
 
 	public void SetPencilShape(PencilShape shape) {
 		this.shape = shape;
+	}
+
+	public void FlipCheck() {
+		if (book != null) {
+			drawingEnabled = book.currentPaper == pagePaperIndex;
+		}
+		else {
+			drawingEnabled = true;
+		}
+	}
+
+	public void DisableDrawing() {
+		drawingEnabled = false;
 	}
 
 	#endregion

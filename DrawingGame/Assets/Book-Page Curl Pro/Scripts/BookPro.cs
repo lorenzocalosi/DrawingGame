@@ -28,15 +28,20 @@ public class BookPro : MonoBehaviour
     public int currentPaper = 0;
     [HideInInspector]
     public Paper[] papers;
-    /// <summary>
-    /// OnFlip invocation list, called when any page flipped
-    /// </summary>
-    public UnityEvent OnFlip;
+	/// <summary>
+	/// OnFlip invocation list, called when any page flipped
+	/// </summary>
+	public UnityEvent OnFlip;
 
-    /// <summary>
-    /// The Current Shown paper (the paper its front shown in right part)
-    /// </summary>
-    public int CurrentPaper
+	/// <summary>
+	/// OnFlip invocation list, called when you begin flipping any page
+	/// </summary>
+	public UnityEvent OnFlipStart;
+
+	/// <summary>
+	/// The Current Shown paper (the paper its front shown in right part)
+	/// </summary>
+	public int CurrentPaper
     {
         get { return currentPaper; }
         set
@@ -281,7 +286,7 @@ public class BookPro : MonoBehaviour
     {
         if (interactable && !tweening)
         {
-          
+			OnFlipStart?.Invoke();
             DragRightPageToPoint(transformPointMousePosition(Input.mousePosition));
         }
 
@@ -318,7 +323,8 @@ public class BookPro : MonoBehaviour
     {
         if (interactable && !tweening)
         {
-            DragLeftPageToPoint(transformPointMousePosition(Input.mousePosition));
+			OnFlipStart?.Invoke();
+			DragLeftPageToPoint(transformPointMousePosition(Input.mousePosition));
 
         }
 
