@@ -53,4 +53,61 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Story/Scene_2/2.3.unity
     guid: d56c532466421ab4ca0ccdd9e02e60be
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.1.unity
+    guid: 4a85ff8c19cd5494c85a91683d54d957
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.2.unity
+    guid: b226070e2a20dac49ac3d155ce1554c7
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.3.unity
+    guid: b8b297bacfeec8145b55cc8f3d5d6895
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.4.unity
+    guid: 3cf80ed63ccaf284cb7ad7a7dffb3cc7
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.5.unity
+    guid: b9671caa36ec2be4aae24cd38ccca92c
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.6.unity
+    guid: 931d141bcf3658f4a8e9dfd1199756e9
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.7.unity
+    guid: 3aecae9a6c692be41b47b2558682c3bf
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.8.unity
+    guid: 9767c9ead3b969d4d9f6f11ee98e2828
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.9.unity
+    guid: a94078636ea430a4bb7953ca93d7a97b
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.10.unity
+    guid: 38457c31aa04cb34cb61540adc88df4e
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.11.unity
+    guid: e3c640ab368e8994a8338f5a9d92454e
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.12.unity
+    guid: ea05ec2e772c1084eaf0d7118eb4624c
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.13.unity
+    guid: 99083f6bc45071942a7e1d5444bfd906
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.14.unity
+    guid: 5b238f19192065a40bbe6fa46c25958c
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.15.unity
+    guid: 8203b22fc32fffa4c85f6b406604f235
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.16.unity
+    guid: a60730d49741ed94fbe3968263875f1e
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.17.unity
+    guid: 2acbc6ae207d1b940b6fa4ad869f7e88
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.18.unity
+    guid: 21156fc4b1fb28a4aab73f71eb88a563
+  - enabled: 1
+    path: Assets/Scenes/Story/Scene_3/3.19.unity
+    guid: 4621ab989fd057242bfe92ff8d5b7676
   m_configObjects: {}
