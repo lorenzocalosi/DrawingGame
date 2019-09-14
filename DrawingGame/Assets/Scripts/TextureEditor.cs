@@ -169,11 +169,23 @@ public class TextureEditor : MonoBehaviour {
 		editedTexture.Apply();
 	}
 
+	private void WhitenTexture() {
+		Color[] textureColor = new Color [editedTexture.width * editedTexture.height];
+		for (int i = 0; i < textureColor.Length; i++) {
+			int x = i % editedTexture.width;
+			int y = i - x * editedTexture.width;
+			textureColor[i] = editedTexture.GetPixel(x, y) != Color.clear ? Color.white : Color.clear;
+		}
+		editedTexture.SetPixels(textureColor);
+		editedTexture.Apply();
+	}
+
 	#endregion
 
 	#region Texture Saving/Loading
 
-	public bool SaveSprite(string name) {
+	public bool SaveSprite() {
+		WhitenTexture();
 		if (!Directory.Exists(topFolderPath)) {
 			Directory.CreateDirectory(topFolderPath);
 		}
@@ -188,7 +200,7 @@ public class TextureEditor : MonoBehaviour {
 		return true;
 	}
 
-	public bool LoadSprite(string name) {
+	public bool LoadSprite() {
 		if (Directory.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough") && File.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png")) {
 			byte[] rough = File.ReadAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png");
 			editedTexture.LoadImage(rough);
@@ -204,7 +216,7 @@ public class TextureEditor : MonoBehaviour {
 
 	private void CheckHotkeys() {
 		if (Input.GetKeyDown(saveShortcut)) {
-			SaveSprite(path.s);
+			SaveSprite();
 		}
 		if (Input.GetKeyDown(testShortcut)) {
 			SceneManager.LoadScene("PlayingScene");
@@ -213,7 +225,7 @@ public class TextureEditor : MonoBehaviour {
 			ClearTexture();
 		}
 		if (Input.GetKeyDown(loadShortcut)) {
-			LoadSprite(path.s);
+			LoadSprite();
 		}
 	}
 
@@ -226,8 +238,8 @@ public class TextureEditor : MonoBehaviour {
 		clearButton?.onClick.AddListener(() => { ClearTexture(); });
 		squareButton?.onClick.AddListener(() => { SetPencilShape(PencilShape.Square); });
 		circleButton?.onClick.AddListener(() => { SetPencilShape(PencilShape.Circle); });
-		saveButton?.onClick.AddListener(() => { SaveSprite("Test"); });
-		loadButton?.onClick.AddListener(() => { LoadSprite("Test"); });
+		saveButton?.onClick.AddListener(() => { SaveSprite(); });
+		loadButton?.onClick.AddListener(() => { LoadSprite(); });
 		clearButton?.onClick.AddListener(() => { ClearTexture(); });
 		testButton?.onClick.AddListener(() => { SceneManager.LoadScene("PlayingScene"); });
 	}
