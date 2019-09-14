@@ -161,7 +161,7 @@ public class TextureEditor : MonoBehaviour {
 	}
 
 	private void ClearTexture() {
-		Color[] textureColor = new Color [editedTexture.width * editedTexture.height];
+		Color[] textureColor = editedTexture.GetPixels();
 		for (int i = 0; i < textureColor.Length; i++) {
 			textureColor[i] = Color.clear;
 		}
@@ -170,11 +170,9 @@ public class TextureEditor : MonoBehaviour {
 	}
 
 	private void WhitenTexture() {
-		Color[] textureColor = new Color [editedTexture.width * editedTexture.height];
+		Color[] textureColor = editedTexture.GetPixels();
 		for (int i = 0; i < textureColor.Length; i++) {
-			int x = i % editedTexture.width;
-			int y = i - x * editedTexture.width;
-			textureColor[i] = editedTexture.GetPixel(x, y) != Color.clear ? Color.white : Color.clear;
+			textureColor[i] = textureColor[i] == Color.clear ? textureColor[i] : Color.white;
 		}
 		editedTexture.SetPixels(textureColor);
 		editedTexture.Apply();
