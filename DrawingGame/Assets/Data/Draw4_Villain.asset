@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4c8c762ac11b1488f9565b5abafa04, type: 3}
   m_Name: Draw4_Villain
   m_EditorClassIdentifier: 
-  s: 
+  s: Draw4_EvilMachine

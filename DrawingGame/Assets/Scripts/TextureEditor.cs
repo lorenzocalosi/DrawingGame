@@ -66,7 +66,7 @@ public class TextureEditor : MonoBehaviour {
 	#region Unity Callbacks
 
 	private void Start() {
-		topFolderPath = string.Concat(Application.dataPath , Path.DirectorySeparatorChar , "GeneratedSprites");
+		topFolderPath = string.Concat(Application.persistentDataPath, Path.DirectorySeparatorChar , "GeneratedSprites");
 		roughFolderPath = string.Concat(topFolderPath , Path.DirectorySeparatorChar, "Rough");
 		trimmedFolderPath = string.Concat(topFolderPath , Path.DirectorySeparatorChar, "Trimmed");
 		lastPosition = new Vector2(-1, -1);
@@ -199,8 +199,8 @@ public class TextureEditor : MonoBehaviour {
 	}
 
 	public bool LoadSprite() {
-		if (Directory.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough") && File.Exists(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png")) {
-			byte[] rough = File.ReadAllBytes(Application.dataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png");
+		if (Directory.Exists(Application.persistentDataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough") && File.Exists(Application.persistentDataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png")) {
+			byte[] rough = File.ReadAllBytes(Application.persistentDataPath + Path.DirectorySeparatorChar + "GeneratedSprites" + Path.DirectorySeparatorChar + "Rough" + Path.DirectorySeparatorChar + name + ".png");
 			editedTexture.LoadImage(rough);
 			editedTexture.Apply();
 			return true;
@@ -231,7 +231,7 @@ public class TextureEditor : MonoBehaviour {
 		foreach (Button button in colorButtons) {
 			button?.onClick.AddListener(() => { SetPencilColor(button.transform.GetChild(0).GetComponent<Image>().color); });
 		}
-		drawButton?.onClick.AddListener(() => { SetPencilColor(lastColor); });
+		drawButton?.onClick.AddListener(() => { SetPencilColor(Color.black); });
 		eraseButton?.onClick.AddListener(() => { SetPencilColor(Color.clear); });
 		clearButton?.onClick.AddListener(() => { ClearTexture(); });
 		squareButton?.onClick.AddListener(() => { SetPencilShape(PencilShape.Square); });
