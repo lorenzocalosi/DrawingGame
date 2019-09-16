@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/PlayingScene.unity
     guid: 624c332610a65ac45b67727bff2aa40b
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/School/School 1.unity
+    guid: 0cf3f328c41705c438370e226a8d6146
+  - enabled: 1
     path: Assets/Scenes/BookTest.unity
     guid: aeeee3b9cbff5e245a08a1733ba95804
   - enabled: 1
@@ -113,4 +116,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Story/Scene_3/3.20.unity
     guid: 573bfdb446214ac46a9becd00bae837b
+  - enabled: 1
+    path: Assets/Scenes/School/School Distracted.unity
+    guid: 29b48b3762b665846a87a8dc1505aaf0
+  - enabled: 1
+    path: Assets/Scenes/School/School error.unity
+    guid: 51e730ca619e6904eb75861c1758cd93
+  - enabled: 1
+    path: Assets/Scenes/School/School victory.unity
+    guid: f40cd61422bef5c42aab0dfd8b190b31
+  - enabled: 1
+    path: Assets/Scenes/School/School Reality Check.unity
+    guid: 2a7978d0c91966049a25662fc1f67f2e
   m_configObjects: {}
